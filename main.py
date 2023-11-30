@@ -1,6 +1,7 @@
 from PIL import Image, ImageDraw
 import numpy as np
 from math import sqrt
+from utils import FolderUtils
 
 
 def sobel_operator(input_image):
