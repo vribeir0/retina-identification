@@ -1,13 +1,12 @@
-import os
 import cv2
+from utils import FolderUtils
 
 result_path = "frames/"
 video_path = "video/pupil01.avi"
 
 
 def convert_video_into_frames():
-    if not os.path.exists(result_path):
-        os.makedirs(result_path)
+    FolderUtils.create_if_not_exists(result_path)
 
     count = 1
 
