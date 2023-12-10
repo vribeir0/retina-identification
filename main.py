@@ -4,44 +4,7 @@ from math import sqrt
 import cv2
 from utils import FolderUtils
 import os
-import re 
-
-# Ajuste conforme necessário
-min_area = 2000
-max_area = 5000
-
-
-# def sobel_operator(input_image):
-#     input_pixels = input_image.load()
-#     width, height = input_image.size
-
-#     print("width: " + str(width))
-#     print("height: " + str(height))
-
-#     output_image = Image.new("RGB", input_image.size)
-#     draw = ImageDraw.Draw(output_image)
-
-#     intensity = to_grayscale(width, height, input_pixels)
-
-#     # Compute convolution between intensity and kernels
-#     for x in range(1, width - 1):
-#         for y in range(1, height - 1):
-#             magx = intensity[x + 1, y] - intensity[x - 1, y]
-#             magy = intensity[x, y + 1] - intensity[x, y - 1]
-
-#             # Draw in black and white the magnitude
-#             color = int(sqrt(magx**2 + magy**2))
-#             draw.point((x, y), (color, color, color))
-
-#     return output_image
-
-
-# def to_grayscale(width, height, input_pixels):
-#     intensity = np.zeros((width, height))
-#     for x in range(width):
-#         for y in range(height):
-#             intensity[x, y] = sum(input_pixels[x, y]) / 3
-#     return intensity
+import re
 
 def canny_edge_detector(input_image):
     numpy_image = np.array(input_image)
@@ -71,20 +34,25 @@ def canny_edge_detector(input_image):
 
     return area, image
 
+
 def calculate_relative_variation(current, previous):
     if previous == 0:
         return 0
     else:
         return (current - previous) / previous
     
+
 def apply_clahe(image):
     image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2GRAY)
     clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
     return clahe.apply(image)
 
+
 def extract_number(filename):
     match = re.search(r'\d+', filename)
     return int(match.group()) if match else 0
+
+
 
 def main():
     result_folder = "result/edge"
@@ -116,25 +84,5 @@ def main():
 
     print("percentual relative variation media: " + str(abs(np.mean(relative_variation_media))*100))
 
-    # FolderUtils.create_if_not_exists(result_folder)
-    # output_image.save(result_folder + "edge.png")
-
 if __name__ == "__main__":
     main()
-
-
-    # _, binary_image = cv2.threshold(gray_image, 127, 255, cv2.THRESH_BINARY)
-
-    # contours, _ = cv2.findContours(binary_image, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-    # print("contours: " + str(len(contours))) 
-
-    # # Encontre o contorno com base em critérios específicos (ajuste conforme necessário)
-    # for contour in contours:
-    #     area = cv2.contourArea(contour)
-    #     print("area: " + str(area)) 
-    #     if area > min_area and area < max_area:
-    #        print(area) 
-
-    # # Desenhe os contornos na imagem original
-    # cv2.drawContours(numpy_image, contours, -1, (255, 255, 0), 1)
